@@ -50,4 +50,50 @@ router.post('/products',(req,res)=>{
     })
 })
 
+router.put('/products/:id',(req,res)=>{
+    pool.getConnection((error,connection)=>{
+        if (error) throw error
+        let q = `SELECT * FROM products WHERE id = ${connection.escape(req.params.id)}`
+        connection.query(q,(error,rows,fields)=>{
+            if(error) throw error
+            if(rows.length > 0){
+                let q1 = `UPDATE products SET name = ${connection.escape(req.body.name)} WHERE id = ${connection.escape(req.params.id)}`
+                connection.query(q1,(error,rows,fields)=>{
+                    if(error) throw error
+                    let q2 = `SELECT * FROM products WHERE id = ${connection.escape(req.params.id)}`
+                    connection.query(q2,(error,rows,fields)=>{
+                        res.status(200)
+                        res.send({resouse_updated: rows[0]})
+                    })
+                })
+            }else{
+                res.status(404)
+                res.send({message:'error not found'})
+            }
+        })
+    })
+})
+
+router.delete('/products/:id',(req,res)=>{
+    pool.getConnection((error,connection)=>{
+        if(error) throw error
+        let q = `SELECT * FROM products WHERE id = ${connection.escape(req.params.id)}`
+        connection.query(q,(error,rows,fields)=>{
+            if (error) throw error
+            if(rows.length > 0){
+                let q1 = `DELETE FROM products WHERE id = ${connection.escape(req.params.id)}`
+                connection.query(q1,(error,rows,fields)=>{
+                    res.status(200)
+                    res.send({resouse_deleted:rows[0]})
+                })
+            }else{
+                res.status(404)
+                res.send({message:'error not found'})
+            }
+        })
+    })
+})
+
+
+
 module.exports = router
