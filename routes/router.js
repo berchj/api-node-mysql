@@ -63,7 +63,7 @@ router.put('/products/:id',(req,res)=>{
                     let q2 = `SELECT * FROM products WHERE id = ${connection.escape(req.params.id)}`                    
                     connection.query(q2,(error,rows,fields)=>{
                         res.status(200)
-                        res.send({resouse_updated: rows[0]})
+                        res.send({resourse_updated: rows[0]})
                     })
                 })
             }else{
@@ -84,7 +84,7 @@ router.delete('/products/:id',(req,res)=>{
                 let q1 = `DELETE FROM products WHERE id = ${connection.escape(req.params.id)}`                
                 connection.query(q1,(error,rows,fields)=>{
                     res.status(200)
-                    res.send({resouse_deleted:rows[0]}) 
+                    res.send({resourse_deleted:rows[0]}) 
                 })
             }else{
                 res.status(404)
