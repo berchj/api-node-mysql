@@ -57,10 +57,10 @@ router.put('/products/:id',(req,res)=>{
         connection.query(q,(error,rows,fields)=>{
             if(error) throw error
             if(rows.length > 0){
-                let q1 = `UPDATE products SET name = ${connection.escape(req.body.name)} WHERE id = ${connection.escape(req.params.id)}`
-                connection.query(q1,(error,rows,fields)=>{
+                let q1 = [`UPDATE products SET name = ${connection.escape(req.body.name)} WHERE id = ${connection.escape(req.params.id)}`,`UPDATE products SET price = ${connection.escape(req.body.price)} WHERE id = ${connection.escape(req.params.id)}`]
+                connection.query(q1.join(';'),(error,rows,fields)=>{
                     if(error) throw error
-                    let q2 = `SELECT * FROM products WHERE id = ${connection.escape(req.params.id)}`
+                    let q2 = `SELECT * FROM products WHERE id = ${connection.escape(req.params.id)}`                    
                     connection.query(q2,(error,rows,fields)=>{
                         res.status(200)
                         res.send({resouse_updated: rows[0]})
@@ -81,7 +81,7 @@ router.delete('/products/:id',(req,res)=>{
         connection.query(q,(error,rows,fields)=>{
             if (error) throw error
             if(rows.length > 0){
-                let q1 = `DELETE FROM products WHERE id = ${connection.escape(req.params.id)}`
+                let q1 = `DELETE FROM products WHERE id = ${connection.escape(req.params.id)}`                
                 connection.query(q1,(error,rows,fields)=>{
                     res.status(200)
                     res.send({resouse_deleted:rows[0]}) 
