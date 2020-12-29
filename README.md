@@ -1,6 +1,8 @@
 steps to use :
 - clone this repo 
 
+- import the database 
+
 - install with npm the dependencies of the project
 
 - configure the file lib/pool/index with the data you use in mysql server (user,password)
